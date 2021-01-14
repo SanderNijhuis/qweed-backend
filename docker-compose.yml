@@ -1,0 +1,62 @@
+version: '3.3'
+ 
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: wv3EUsE1bKktqHUfTplbaOIic8gqsw7L
+      MYSQL_DATABASE: qweed
+      MYSQL_USER: qweed
+      MYSQL_PASSWORD: 0ZWTLRCiJ6MWtb5B
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    ports:
+      - 9001:80
+
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    networks:
+      - proxy
+    ports:
+      - 80:80
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "./vhost.d:/etc/nginx/vhost.d:ro"
+
+  portainer:
+    depends_on:
+      - nginx-proxy
+    image: portainer/portainer-ce:2.0.0
+    container_name: portainer
+    command: -H unix:///var/run/docker.sock
+    networks:
+      - proxy
+    environment:
+      VIRTUAL_HOST: 127.0.0.1
+      VIRTUAL_PORT: 9000
+    ports:
+      - 9000:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+
+networks:
+  proxy:
+
+volumes:
+  mysql_data:
+  portainer_data:
