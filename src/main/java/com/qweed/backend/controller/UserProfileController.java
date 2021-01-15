@@ -1,0 +1,31 @@
+package com.qweed.backend.controller;
+
+import com.qweed.backend.jpa.Customer;
+import com.qweed.backend.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(path = "/api/v1/users")
+public class UserProfileController {
+    @Autowired
+    private CustomerService customerService;
+
+    @GetMapping(value = "", produces = "application/json")
+    public @ResponseBody Iterable<Customer> getUserDetail() {
+        return customerService.findAll();
+    }
+
+    @PostMapping(value = "/user", produces = "application/json")
+    public @ResponseBody Customer createUser(@RequestParam String username, @RequestParam String password) {
+        final Customer customer = new Customer();
+        customer.setUserName(username);
+        customer.setPassword(password);
+        return customerService.save(customer);
+    }
+
+    @GetMapping(value = "/user/{id}", produces = "application/json")
+    public @ResponseBody Customer getUserDetail(@PathVariable Long id) {
+        return customerService.findById(id);
+    }
+}
