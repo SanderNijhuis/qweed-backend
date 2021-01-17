@@ -4,7 +4,7 @@ import com.qweed.backend.jpa.Customer;
 import com.qweed.backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = "http://127.0.0.1:8081")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/api/v1/users")
 public class UserProfileController {
@@ -17,10 +17,11 @@ public class UserProfileController {
     }
 
     @PostMapping(value = "/user", produces = "application/json")
-    public @ResponseBody Customer createUser(@RequestParam String username, @RequestParam String password) {
+    public @ResponseBody Customer createUser(@RequestParam String username, @RequestParam String password, @RequestParam String motivation) {
         final Customer customer = new Customer();
         customer.setUserName(username);
         customer.setPassword(password);
+        customer.setMotivation(motivation);
         return customerService.save(customer);
     }
 
