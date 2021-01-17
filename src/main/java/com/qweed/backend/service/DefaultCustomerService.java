@@ -22,6 +22,17 @@ public class DefaultCustomerService implements CustomerService {
     }
 
     @Override
+    public Iterable<Customer> findAll() {
+        return customerRepository.findAll();
+    }
+
+    @Override
+    public Customer findById(Long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        return customer.orElse(null);
+    }
+
+    @Override
     public Optional<User> findByToken(String token) {
         Optional<Customer> customer = customerRepository.findByToken(token);
         if (customer.isPresent()) {
@@ -31,17 +42,6 @@ public class DefaultCustomerService implements CustomerService {
             return Optional.of(user);
         }
         return Optional.empty();
-    }
-
-    @Override
-    public Iterable<Customer> findAll() {
-        return customerRepository.findAll();
-    }
-
-    @Override
-    public Customer findById(Long id) {
-        Optional<Customer> customer = customerRepository.findById(id);
-        return customer.orElse(null);
     }
 
     @Override
