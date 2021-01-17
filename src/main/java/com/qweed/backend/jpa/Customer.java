@@ -12,8 +12,12 @@ public class Customer {
     private Long id;
     private String userName;
     private String password;
-    private String motivation;
     private String token;
+    private String motivation;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getUserName() {
         return userName;
@@ -21,14 +25,6 @@ public class Customer {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getMotivation() {
-        return motivation;
-    }
-
-    public void setMotivation(String motivation) {
-        this.motivation = motivation;
     }
 
     public String getPassword() {
@@ -39,8 +35,20 @@ public class Customer {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getMotivation() {
+        return motivation;
+    }
+
+    public void setMotivation(String motivation) {
+        this.motivation = motivation;
     }
 
     @Override
@@ -50,13 +58,5 @@ public class Customer {
                 ", password='" + password + '\'' +
                 ", motivation='" + motivation + '\'' +
                 '}';
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }
