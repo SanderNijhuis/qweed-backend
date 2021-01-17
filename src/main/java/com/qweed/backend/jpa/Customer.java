@@ -12,6 +12,7 @@ public class Customer {
     private Long id;
     private String userName;
     private String password;
+    private String motivation;
     private String token;
 
     public String getUserName() {
@@ -20,6 +21,14 @@ public class Customer {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getMotivation() {
+        return motivation;
+    }
+
+    public void setMotivation(String motivation) {
+        this.motivation = motivation;
     }
 
     public String getPassword() {
@@ -39,6 +48,7 @@ public class Customer {
         return "Customer{" +
                 "userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
+                ", motivation='" + motivation + '\'' +
                 '}';
     }
 
