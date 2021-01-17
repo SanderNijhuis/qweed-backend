@@ -28,4 +28,10 @@ public class UserProfileController {
     public @ResponseBody Customer getUserDetail(@PathVariable Long id) {
         return customerService.findById(id);
     }
+
+    @DeleteMapping(value = "/user/{id}", produces = "text/plain")
+    public @ResponseBody String deleteUser(@PathVariable Long id) {
+        customerService.deleteById(id);
+        return "Executed. Status unknown.";
+    }
 }

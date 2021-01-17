@@ -17,17 +17,8 @@ public class DefaultCustomerService implements CustomerService {
     CustomerRepository customerRepository;
 
     @Override
-    public String login(String username, String password) {
-        Optional<Customer> customer = customerRepository.login(username, password);
-        if (customer.isPresent()) {
-            String token = UUID.randomUUID().toString();
-            Customer custom = customer.get();
-            custom.setToken(token);
-            customerRepository.save(custom);
-            return token;
-        }
-
-        return StringUtils.EMPTY;
+    public void deleteById(Long id) {
+        customerRepository.deleteById(id);
     }
 
     @Override
@@ -51,6 +42,20 @@ public class DefaultCustomerService implements CustomerService {
     public Customer findById(Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
         return customer.orElse(null);
+    }
+
+    @Override
+    public String login(String username, String password) {
+        Optional<Customer> customer = customerRepository.login(username, password);
+        if (customer.isPresent()) {
+            String token = UUID.randomUUID().toString();
+            Customer custom = customer.get();
+            custom.setToken(token);
+            customerRepository.save(custom);
+            return token;
+        }
+
+        return StringUtils.EMPTY;
     }
 
     @Override
