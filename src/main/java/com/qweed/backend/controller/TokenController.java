@@ -18,7 +18,7 @@ public class TokenController {
     String getToken(@RequestParam("username") final String username, @RequestParam("password") final String password) {
         String token = customerService.login(username, password);
         if (StringUtils.isEmpty(token)) {
-            return "no token found";
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect login details.");
         }
         return token;
     }
