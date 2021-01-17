@@ -2,6 +2,7 @@ package com.qweed.backend.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,20 +13,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.security.web.util.matcher.OrRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
-
-    private static final RequestMatcher PROTECTED_URLS = new OrRequestMatcher(
-            new AntPathRequestMatcher("/api/**")
-    );
 
     AuthenticationProvider provider;
 
@@ -46,29 +39,32 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement()
+        http
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+
                 .exceptionHandling()
                 .and()
+
                 .authenticationProvider(provider)
-                .addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter.class)
                 .authorizeRequests()
-                .requestMatchers(PROTECTED_URLS)
-                .authenticated()
+
+                .antMatchers("/api/v1/users", HttpMethod.GET.name()).permitAll()
+                .antMatchers("/api/v1/users/user", HttpMethod.POST.name()).anonymous()
+                .antMatchers("/api/v1/users/user/**", HttpMethod.GET.name()).authenticated() // TODO ? ¯\_(ツ)_/¯
+                .anyRequest().denyAll()
+
                 .and()
                 .csrf().disable()
                 .formLogin().disable()
-                .httpBasic().disable()
-                .logout().disable();
-    }
+                //.httpBasic().disable()
+                .httpBasic();
 
-    @Bean
-    AuthenticationProcessingFilter authenticationFilter() throws Exception {
-        final AuthenticationProcessingFilter filter = new AuthenticationProcessingFilter(PROTECTED_URLS);
-        filter.setAuthenticationManager(authenticationManager());
-        //filter.setAuthenticationSuccessHandler(successHandler());
-        return filter;
+        http
+                .cors()
+                .and()
+                .logout().disable();
     }
 
     @Bean
