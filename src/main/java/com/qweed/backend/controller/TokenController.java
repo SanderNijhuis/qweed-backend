@@ -4,8 +4,8 @@ import com.qweed.backend.service.CustomerService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -15,11 +15,13 @@ public class TokenController {
 
     @PostMapping(value = "/token", produces = "text/plain")
     public @ResponseBody
-    String getToken(@RequestParam("username") final String username, @RequestParam("password") final String password) {
+    ResponseEntity<String> getToken(@RequestParam("username") final String username, @RequestParam("password") final String password) {
         String token = customerService.login(username, password);
+
         if (StringUtils.isEmpty(token)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect login details.");
+            return new ResponseEntity<>("Incorrect login details.", HttpStatus.BAD_REQUEST);
         }
-        return token;
+
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 }
