@@ -27,7 +27,11 @@ public class CustomerController {
         customer.setUserName(username);
         customer.setPassword(password);
         customer.setMotivation(motivation);
-        return new ResponseEntity<>(customerService.save(customer), HttpStatus.OK);
+
+        if (customerService.save(customer) == null)
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
     @GetMapping(value = "/user/{username}", produces = "application/json")

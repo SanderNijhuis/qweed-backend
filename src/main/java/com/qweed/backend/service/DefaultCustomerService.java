@@ -60,6 +60,10 @@ public class DefaultCustomerService implements CustomerService {
 
     @Override
     public Customer save(Customer customer) {
+        Customer queried_customer = findByUserName(customer.getUserName());
+        if(queried_customer != null)
+            return null;
+
         return customerRepository.save(customer);
     }
 }
