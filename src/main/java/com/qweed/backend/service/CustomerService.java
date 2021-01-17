@@ -6,13 +6,13 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Optional;
 
 public interface CustomerService {
-    void deleteById(Long id);
+    void deleteByUserName(String userName);
 
     Iterable<Customer> findAll();
 
-    Customer findById(Long id);
-
     Optional<User> findByToken(String token);
+
+    Customer findByUserName(String userName);
 
     String login(String username, String password);
 

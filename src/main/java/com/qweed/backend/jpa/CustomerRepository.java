@@ -12,4 +12,6 @@ public interface CustomerRepository extends CrudRepository<Customer, Long> {
     Optional<Customer> login(String username, String password);
 
     Optional<Customer> findByToken(String token);
+
+    Optional<Customer> findCustomerByUserName(String username);
 }

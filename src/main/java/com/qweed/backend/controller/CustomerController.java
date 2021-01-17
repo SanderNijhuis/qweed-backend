@@ -30,16 +30,16 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.save(customer), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/user/{id}", produces = "application/json")
+    @GetMapping(value = "/user/{username}", produces = "application/json")
     public @ResponseBody
-    ResponseEntity<Customer> getUserDetail(@PathVariable Long id) {
-        return new ResponseEntity<>(customerService.findById(id), HttpStatus.OK);
+    ResponseEntity<Customer> getUserDetail(@PathVariable String username) {
+        return new ResponseEntity<>(customerService.findByUserName(username), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/user/{id}", produces = "text/plain")
+    @DeleteMapping(value = "/user/{username}", produces = "text/plain")
     public @ResponseBody
-    ResponseEntity<String> deleteUser(@PathVariable Long id) {
-        customerService.deleteById(id);
+    ResponseEntity<String> deleteUser(@PathVariable String username) {
+        customerService.deleteByUserName(username);
         return new ResponseEntity<>("Executed. Status unknown.", HttpStatus.OK);
     }
 }

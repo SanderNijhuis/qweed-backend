@@ -17,19 +17,13 @@ public class DefaultCustomerService implements CustomerService {
     CustomerRepository customerRepository;
 
     @Override
-    public void deleteById(Long id) {
-        customerRepository.deleteById(id);
+    public void deleteByUserName(String userName) {
+        customerRepository.delete(findByUserName(userName));
     }
 
     @Override
     public Iterable<Customer> findAll() {
         return customerRepository.findAll();
-    }
-
-    @Override
-    public Customer findById(Long id) {
-        Optional<Customer> customer = customerRepository.findById(id);
-        return customer.orElse(null);
     }
 
     @Override
@@ -42,6 +36,12 @@ public class DefaultCustomerService implements CustomerService {
             return Optional.of(user);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Customer findByUserName(String userName) {
+        Optional<Customer> customer = customerRepository.findCustomerByUserName(userName);
+        return customer.orElse(null);
     }
 
     @Override
