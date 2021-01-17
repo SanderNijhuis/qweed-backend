@@ -8,11 +8,11 @@ import java.util.Optional;
 public interface CustomerService {
     void deleteById(Long id);
 
-    Optional<User> findByToken(String token);
-
     Iterable<Customer> findAll();
 
     Customer findById(Long id);
+
+    Optional<User> findByToken(String token);
 
     String login(String username, String password);
 
