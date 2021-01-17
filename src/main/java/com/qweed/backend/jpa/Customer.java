@@ -11,8 +11,8 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String userName;
-    private String password;
     private String token;
+    private String password;
     private String motivation;
 
     public Long getId() {
