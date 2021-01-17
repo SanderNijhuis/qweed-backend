@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(path = "/api/v1/users")
-public class UserProfileController {
+public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
