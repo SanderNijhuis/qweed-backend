@@ -4,7 +4,7 @@ import com.qweed.backend.jpa.Customer;
 import com.qweed.backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin(origins = "http://127.0.0.1:8081")
 @RestController
 @RequestMapping(path = "/api/v1/users")
 public class UserProfileController {
