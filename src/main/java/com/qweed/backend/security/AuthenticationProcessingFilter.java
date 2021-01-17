@@ -25,7 +25,8 @@ public class AuthenticationProcessingFilter extends AbstractAuthenticationProces
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws AuthenticationException {
-        String token = httpServletRequest.getHeader(AUTHORIZATION);
+        String tokenParam = httpServletRequest.getHeader(AUTHORIZATION);
+        String token = StringUtils.isNotEmpty(tokenParam) ? tokenParam : "";
         token = StringUtils.removeStart(token, "Bearer").trim();
         Authentication requestAuthentication = new UsernamePasswordAuthenticationToken(token, token);
         return getAuthenticationManager().authenticate(requestAuthentication);
