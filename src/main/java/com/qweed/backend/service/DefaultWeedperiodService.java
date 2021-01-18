@@ -25,16 +25,15 @@ public class DefaultWeedperiodService implements WeedperiodService {
 
     @Override
     public Weedperiod findByID(Long id) {
-        Optional<Weedperiod> weedperiod = weedperiodRepository.findById(id);
-        return null;
+        Optional<Weedperiod> weedperiod = weedperiodRepository.findWeedperiodById(id);
+        return weedperiod.orElse(null);
     }
 
     @Override
     public Weedperiod save(Weedperiod weedperiod) {
-        //Weedperiod queried_weedperiod = findByID(weedperiod.getId());
-        //if(queried_weedperiod != null)
-            //return null;
-
+        Weedperiod queried_weedperiod = findByID(weedperiod.getId());
+        if(queried_weedperiod != null)
+            return null;
         return weedperiodRepository.save(weedperiod);
     }
 }

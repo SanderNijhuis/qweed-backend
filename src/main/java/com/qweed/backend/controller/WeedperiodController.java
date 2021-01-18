@@ -44,6 +44,7 @@ public class WeedperiodController {
     @DeleteMapping(value = "/weedperiod/{id}", produces = "text/plain")
     public @ResponseBody
     ResponseEntity<String> deleteWeedPeriod(@PathVariable Long id) {
+
         weedperiodService.deleteByID(id);
         return new ResponseEntity<>("Executed. Status unknown.", HttpStatus.OK);
     }
