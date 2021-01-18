@@ -1,17 +1,22 @@
 package com.qweed.backend.jpa;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name = "customer")
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
+    @NotNull
     private String userName;
 
     private String token;
+    @NotNull
     private String password;
     private String motivation;
 
