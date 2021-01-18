@@ -24,11 +24,6 @@ public class DefaultWeedperiodService implements WeedperiodService {
     }
 
     @Override
-    public Iterable<Weedperiod> findAll() {
-        return weedperiodRepository.findAll();
-    }
-
-    @Override
     public Weedperiod findByID(Long id) {
         return null;
     }

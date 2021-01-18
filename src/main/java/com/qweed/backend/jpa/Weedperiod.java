@@ -37,6 +37,8 @@ public class Weedperiod {
     private Long totalTime;
     @Transient
     private double costPerJoint;
+    @Transient
+    public String customerName;
 
 
     public Long getId() {
@@ -135,7 +137,6 @@ public class Weedperiod {
         this.costPerJoint = costPerJoint;
     }
 
-
     public String getName() {
         return name;
     }
@@ -144,7 +145,13 @@ public class Weedperiod {
         this.name = name;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
 
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
     public Date getStartDate() {
         return startDate;

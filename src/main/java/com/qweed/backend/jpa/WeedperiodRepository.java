@@ -9,5 +9,4 @@ import java.util.Optional;
 @Repository
 public interface WeedperiodRepository extends CrudRepository<Weedperiod, Long> {
 
-    Optional<Weedperiod> findWeedperiodBy(long id);
 }

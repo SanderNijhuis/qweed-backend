@@ -10,8 +10,6 @@ public interface WeedperiodService {
 
     void deleteByID(long id);
 
-    Iterable<Weedperiod> findAll();
-
     Weedperiod findByID(Long id);
 
     Weedperiod save(Weedperiod weedperiod);
