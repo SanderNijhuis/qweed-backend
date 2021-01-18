@@ -1,6 +1,4 @@
 package com.qweed.backend.controller;
-
-import com.qweed.backend.jpa.Customer;
 import com.qweed.backend.jpa.Weedperiod;
 import com.qweed.backend.service.CustomerService;
 import com.qweed.backend.service.WeedperiodService;
