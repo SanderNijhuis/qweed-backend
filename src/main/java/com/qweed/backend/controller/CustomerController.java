@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(path = "/api/v1/users")
+//@RequestMapping(path = "/api/v1/users")
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
@@ -34,13 +34,13 @@ public class CustomerController {
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/user/{username}", produces = "application/json")
+    @GetMapping(value = "/api/v1/users/user/{username}", produces = "application/json")
     public @ResponseBody
     ResponseEntity<Customer> getUserDetail(@PathVariable String username) {
         return new ResponseEntity<>(customerService.findByUserName(username), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/user/{username}", produces = "text/plain")
+    @DeleteMapping(value = "/api/v1/users/user/{username}", produces = "text/plain")
     public @ResponseBody
     ResponseEntity<String> deleteUser(@PathVariable String username) {
         customerService.deleteByUserName(username);
