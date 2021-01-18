@@ -97,12 +97,12 @@ public class Weedperiod {
         this.averageDurationPerWeek = averageDurationPerWeek;
     }
 
-    public Boolean getInitial() {
+    public Boolean getIsInitial() {
         return isInitial;
     }
 
-    public void setInitial(Boolean initial) {
-        isInitial = initial;
+    public void setIsInitial(Boolean isInitial) {
+        this.isInitial = isInitial;
     }
 
     public Long getTotalJoints() {
