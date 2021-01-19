@@ -32,10 +32,12 @@ public class DefaultWeedperiodService implements WeedperiodService {
 
     @Override
     public Weedperiod save(Weedperiod weedperiod) {
-        Weedperiod queried_weedperiod = findByCustomer(weedperiod.getCustomer());
+        if(weedperiod.getIsInitial()) {
+            Weedperiod queried_weedperiod = findByCustomer(weedperiod.getCustomer());
 
-        if (queried_weedperiod != null)
-            return null;
+            if (queried_weedperiod != null)
+                return null;
+        }
 
         return weedperiodRepository.save(weedperiod);
     }
