@@ -37,6 +37,11 @@ public class DefaultWeedperiodService implements WeedperiodService {
 
             if (queried_weedperiod != null)
                 return null;
+        } else {
+            Weedperiod queried_weedperiod = findByCustomer(weedperiod.getCustomer());
+
+            if (queried_weedperiod == null)
+                return null;
         }
 
         return weedperiodRepository.save(weedperiod);
