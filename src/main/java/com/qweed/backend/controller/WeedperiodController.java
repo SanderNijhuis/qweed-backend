@@ -22,6 +22,9 @@ public class WeedperiodController {
     @PostMapping(value = "/weedperiod", produces = "application/json")
     public @ResponseBody
     ResponseEntity<Weedperiod> createWeedPeriod(@RequestBody Weedperiod weedperiod) {
+        if (weedperiod.getCustomerName().isEmpty()){
+
+        }
         weedperiod.setCustomer(customerService.findByUserName(weedperiod.customerName));
 
         if (weedperiodService.save(weedperiod) == null)

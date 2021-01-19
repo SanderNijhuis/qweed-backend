@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service("weedperiodService")
@@ -35,6 +36,17 @@ public class DefaultWeedperiodService implements WeedperiodService {
     @Override
     public Weedperiod save(Weedperiod weedperiod) {
         if(weedperiod.getIsInitial()) {
+            if (weedperiod.getName() == null || weedperiod.getCustomerName() == null || weedperiod.getCustomer() == null || weedperiod.getEndDate() == null || weedperiod.getStartDate() == null || weedperiod.getIsInitial() == null || weedperiod.getAverageDurationPerWeek() == null || weedperiod.getAverageGramPerJoint() == null || weedperiod.getAverageJointsSmokedPerWeek() == null || weedperiod.getCostPerGram() == null){
+                return null;
+            }
+
+            if(weedperiod.getStartDate().after(weedperiod.getEndDate())){
+                return null;
+            }
+            if(weedperiod.getEndDate().after(new Date())){
+                return null;
+            }
+
             Weedperiod queried_weedperiod = findByCustomer(weedperiod.getCustomer());
 
             if (queried_weedperiod != null)
