@@ -2,6 +2,7 @@ package com.qweed.backend.service;
 
 import com.qweed.backend.jpa.Customer;
 import com.qweed.backend.jpa.CustomerRepository;
+import com.qweed.backend.jpa.Smokesession;
 import com.qweed.backend.jpa.Weedperiod;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,7 +45,43 @@ public class DefaultCustomerService implements CustomerService {
     @Override
     public Customer findByUserName(String userName) {
         Optional<Customer> customer = customerRepository.findCustomerByUserName(userName);
+        if (customer.isPresent()){
+            return calculateStats(customer.get());
+        }
         return customer.orElse(null);
+    }
+    @Override
+    public Customer calculateStats(Customer customer) {
+        if (!customer.getWeedperiods().isEmpty()) {
+            for (Weedperiod weedperiod : customer.getWeedperiods()) {
+                weedperiod.setCostPerJoint(round(weedperiod.getCostPerGram() * weedperiod.getAverageGramPerJoint(),2));
+                if (weedperiod.getIsInitial()){
+                    weedperiod.setAverageCostPerWeek(round(weedperiod.getCostPerJoint() * weedperiod.getAverageJointsSmokedPerWeek(),2));
+                }else  {
+
+                    long longnum = 0;
+                    weedperiod.setTotalJoints(longnum);
+                    weedperiod.setTotalTime(longnum);
+
+                    if (!weedperiod.getSmokesessions().isEmpty()){
+                        for (Smokesession smokesession: weedperiod.getSmokesessions()) {
+                            weedperiod.setTotalJoints(weedperiod.getTotalJoints() + smokesession.getJointsSmoked());
+                            weedperiod.setTotalTime(weedperiod.getTotalTime() + smokesession.getDuration());
+                        }
+                        weedperiod.setTotalCosts(round(weedperiod.getTotalJoints() * weedperiod.getCostPerJoint(),2));
+                    }
+
+                }
+            }
+        }
+        return customer;
+    }
+    public double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     @Override

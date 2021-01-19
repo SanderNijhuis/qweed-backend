@@ -13,6 +13,7 @@ public interface CustomerService {
     Optional<User> findByToken(String token);
 
     Customer findByUserName(String userName);
+    Customer calculateStats(Customer customer);
 
     Customer getOverview(String userName);
 
