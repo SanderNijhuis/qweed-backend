@@ -39,6 +39,8 @@ public class Weedperiod {
     @Transient
     private double costPerJoint;
     @Transient
+    private double averageCostPerWeek;
+    @Transient
     public String customerName;
 
     @OneToMany(mappedBy = "weedperiod", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -162,6 +164,14 @@ public class Weedperiod {
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+
+    public double getAverageCostPerWeek() {
+        return averageCostPerWeek;
+    }
+
+    public void setAverageCostPerWeek(double averageCostPerWeek) {
+        this.averageCostPerWeek = averageCostPerWeek;
     }
 
     public List<Smokesession> getSmokesessions() {

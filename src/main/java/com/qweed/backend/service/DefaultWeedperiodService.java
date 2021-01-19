@@ -1,6 +1,7 @@
 package com.qweed.backend.service;
 
 import com.qweed.backend.jpa.Customer;
+import com.qweed.backend.jpa.Smokesession;
 import com.qweed.backend.jpa.Weedperiod;
 import com.qweed.backend.jpa.WeedperiodRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Optional;
 
@@ -25,16 +28,39 @@ public class DefaultWeedperiodService implements WeedperiodService {
     public Weedperiod findByID(Long id) {
         Optional<Weedperiod> weedperiod = weedperiodRepository.findWeedperiodById(id);
         if (weedperiod.isPresent()){
-            //weedperiod = calculateStats(weedperiod);
+            return calculateStats(weedperiod.get());
         }
-        
+
         return weedperiod.orElse(null);
     }
 
     @Override
     public Weedperiod calculateStats(Weedperiod weedperiod) {
-        weedperiod.setCostPerJoint(weedperiod.getCostPerGram() * weedperiod.getAverageGramPerJoint());
+        weedperiod.setCostPerJoint(round(weedperiod.getCostPerGram() * weedperiod.getAverageGramPerJoint(),2));
+        if (weedperiod.getIsInitial()){
+            weedperiod.setAverageCostPerWeek(round(weedperiod.getCostPerJoint() * weedperiod.getAverageJointsSmokedPerWeek(),2));
+        }else  {
+
+            if (!weedperiod.getSmokesessions().isEmpty()){
+                long longnum = 0;
+                weedperiod.setTotalJoints(longnum);
+                weedperiod.setTotalTime(longnum);
+                for (Smokesession smokesession: weedperiod.getSmokesessions()) {
+                    weedperiod.setTotalJoints(weedperiod.getTotalJoints() + smokesession.getJointsSmoked());
+                    weedperiod.setTotalTime(weedperiod.getTotalTime() + smokesession.getDuration());
+                }
+                weedperiod.setTotalCosts(round(weedperiod.getTotalJoints() * weedperiod.getCostPerJoint(),2));
+            }
+
+        }
         return weedperiod;
+    }
+    public double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     @Override
@@ -63,12 +89,22 @@ public class DefaultWeedperiodService implements WeedperiodService {
                 return null;
         } else {
             Weedperiod queried_weedperiod = findByCustomer(weedperiod.getCustomer());
-            if (weedperiod.getName() == null || weedperiod.getCustomerName() == null || weedperiod.getCustomer() == null || weedperiod.getStartDate() == null || weedperiod.getIsInitial() == null || weedperiod.getAverageGramPerJoint() == null || weedperiod.getCostPerGram() == null){
+            if (weedperiod.getName() == null || weedperiod.getCustomer() == null || weedperiod.getStartDate() == null || weedperiod.getIsInitial() == null || weedperiod.getAverageGramPerJoint() == null || weedperiod.getCostPerGram() == null){
                 return null;
             }
             if(weedperiod.getStartDate().after(new Date())){
                 return null;
             }
+            if(weedperiod.getStartDate().before(queried_weedperiod.getEndDate())){
+                return null;
+            }
+            /*if(weedperiod.getStartDate().after(queried_weedperiod.getEndDate())){
+                return null;
+            }*/
+            if(weedperiod.getEndDate() == null){
+                weedperiod.setEndDate(weedperiod.getStartDate());
+            }
+
             if (queried_weedperiod == null)
                 return null;
         }
