@@ -33,6 +33,12 @@ public class WeedperiodController {
         return new ResponseEntity<>(customerService.findByUserName(username).getWeedperiods(), HttpStatus.OK);
     }
 
+    @GetMapping("/overview/{username}")
+    public @ResponseBody
+    ResponseEntity<List> getOverview(@PathVariable String username) {
+        return new ResponseEntity<>(customerService.findByUserName(username).getWeedperiods(), HttpStatus.OK);
+    }
+
     @GetMapping(value = "/weedperiod/{id}", produces = "application/json")
     public @ResponseBody
     ResponseEntity<Weedperiod> getWeedperiod(@PathVariable Long id) {

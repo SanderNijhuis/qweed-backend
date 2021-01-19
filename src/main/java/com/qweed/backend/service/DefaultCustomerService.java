@@ -2,12 +2,14 @@ package com.qweed.backend.service;
 
 import com.qweed.backend.jpa.Customer;
 import com.qweed.backend.jpa.CustomerRepository;
+import com.qweed.backend.jpa.Weedperiod;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,6 +43,17 @@ public class DefaultCustomerService implements CustomerService {
     @Override
     public Customer findByUserName(String userName) {
         Optional<Customer> customer = customerRepository.findCustomerByUserName(userName);
+        return customer.orElse(null);
+    }
+
+    @Override
+    public Customer getOverview(String userName) {
+        Optional<Customer> customer = customerRepository.findCustomerByUserName(userName);
+        //Date maxDate = list.stream().map(u -> u.date).max(Date::compareTo).get();
+        if(customer.isPresent()) {
+          //  Comparator<Weedperiod> comparator = Comparator.comparing(Weedperiod::Enddate);
+           // Customer maxDatedEmploye = customer.weedperiods.stream().filter(emp -> emp.getJoiningDate() != null).max(comparator).get();
+        }
         return customer.orElse(null);
     }
 

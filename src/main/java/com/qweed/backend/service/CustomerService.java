@@ -14,6 +14,8 @@ public interface CustomerService {
 
     Customer findByUserName(String userName);
 
+    Customer getOverview(String userName);
+
     String login(String username, String password);
 
     Customer save(Customer customer);
