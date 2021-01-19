@@ -7,7 +7,7 @@ import java.util.Optional;
 
 @Repository
 public interface WeedperiodRepository extends CrudRepository<Weedperiod, Long> {
-    Optional<Weedperiod> findWeedperiodByCustomer(Customer customer);
+    Optional<Weedperiod> findWeedperiodByCustomerAndIsInitial(Customer customer, Boolean isInitial);
 
     Optional<Weedperiod> findWeedperiodById(Long id);
 }
