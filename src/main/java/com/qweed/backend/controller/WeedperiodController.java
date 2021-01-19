@@ -15,6 +15,7 @@ import java.util.List;
 public class WeedperiodController {
     @Autowired
     private WeedperiodService weedperiodService;
+
     @Autowired
     private CustomerService customerService;
 
@@ -22,8 +23,10 @@ public class WeedperiodController {
     public @ResponseBody
     ResponseEntity<Weedperiod> createWeedPeriod(@RequestBody Weedperiod weedperiod) {
         weedperiod.setCustomer(customerService.findByUserName(weedperiod.customerName));
+
         if (weedperiodService.save(weedperiod) == null)
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
         return new ResponseEntity<>(weedperiod, HttpStatus.OK);
     }
 
