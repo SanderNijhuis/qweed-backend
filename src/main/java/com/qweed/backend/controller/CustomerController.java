@@ -20,6 +20,7 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.findAll(), HttpStatus.OK);
     }
 
+    // TODO should be /api/v1/users/... though authentication is currently too strict
     @PostMapping(value = "/user", produces = "application/json")
     public @ResponseBody
     ResponseEntity<Customer> createUser(@RequestParam String username, @RequestParam String password, @RequestParam String motivation) {
