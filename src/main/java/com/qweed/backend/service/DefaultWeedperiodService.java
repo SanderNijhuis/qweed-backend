@@ -53,7 +53,12 @@ public class DefaultWeedperiodService implements WeedperiodService {
                 return null;
         } else {
             Weedperiod queried_weedperiod = findByCustomer(weedperiod.getCustomer());
-
+            if (weedperiod.getName() == null || weedperiod.getCustomerName() == null || weedperiod.getCustomer() == null || weedperiod.getStartDate() == null || weedperiod.getIsInitial() == null || weedperiod.getAverageGramPerJoint() == null || weedperiod.getCostPerGram() == null){
+                return null;
+            }
+            if(weedperiod.getStartDate().after(new Date())){
+                return null;
+            }
             if (queried_weedperiod == null)
                 return null;
         }

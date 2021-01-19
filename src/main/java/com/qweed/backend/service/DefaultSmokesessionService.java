@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service("smokesessionService")
@@ -27,6 +28,12 @@ public class DefaultSmokesessionService implements SmokesessionService {
     @Override
     public Smokesession save(Smokesession smokesession) {
         if (smokesession.getWeedperiod().getIsInitial()){
+            return null;
+        }
+        if (smokesession.getName() == null || smokesession.getWeedperiodID() == null || smokesession.getWeedperiod() == null || smokesession.getStartDate() == null ||  smokesession.getJointsSmoked() == null||  smokesession.getDuration() == null){
+            return null;
+        }
+        if(smokesession.getStartDate().after(new Date())){
             return null;
         }
         return smokesessionRepository.save(smokesession);

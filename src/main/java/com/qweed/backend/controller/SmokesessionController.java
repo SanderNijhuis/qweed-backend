@@ -24,6 +24,9 @@ public class SmokesessionController {
     @PostMapping(value = "/smokesession", produces = "application/json")
     public @ResponseBody
     ResponseEntity<Smokesession> createSmokesession(@RequestBody Smokesession smokesession) {
+        if (smokesession.getWeedperiodID() == null){
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
         smokesession.setWeedperiod(weedperiodService.findByID(smokesession.getWeedperiodID()));
         if (smokesessionService.save(smokesession) == null)
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
