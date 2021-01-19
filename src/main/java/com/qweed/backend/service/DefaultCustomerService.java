@@ -33,8 +33,7 @@ public class DefaultCustomerService implements CustomerService {
         Optional<Customer> customer = customerRepository.findByToken(token);
         if (customer.isPresent()) {
             Customer customer1 = customer.get();
-            User user = new User(customer1.getUserName(), customer1.getPassword(), true, true, true, true,
-                    AuthorityUtils.createAuthorityList("USER"));
+            User user = new User(customer1.getUserName(), customer1.getPassword(), true, true, true, true, AuthorityUtils.createAuthorityList("USER"));
             return Optional.of(user);
         }
         return Optional.empty();
@@ -74,7 +73,7 @@ public class DefaultCustomerService implements CustomerService {
     @Override
     public Customer save(Customer customer) {
         Customer queried_customer = findByUserName(customer.getUserName());
-        if(queried_customer != null)
+        if (queried_customer != null)
             return null;
 
         return customerRepository.save(customer);
