@@ -24,7 +24,17 @@ public class DefaultWeedperiodService implements WeedperiodService {
     @Override
     public Weedperiod findByID(Long id) {
         Optional<Weedperiod> weedperiod = weedperiodRepository.findWeedperiodById(id);
+        if (weedperiod.isPresent()){
+            //weedperiod = calculateStats(weedperiod);
+        }
+        
         return weedperiod.orElse(null);
+    }
+
+    @Override
+    public Weedperiod calculateStats(Weedperiod weedperiod) {
+        weedperiod.setCostPerJoint(weedperiod.getCostPerGram() * weedperiod.getAverageGramPerJoint());
+        return weedperiod;
     }
 
     @Override

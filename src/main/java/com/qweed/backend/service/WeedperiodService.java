@@ -8,6 +8,8 @@ public interface WeedperiodService {
 
     Weedperiod findByID(Long id);
 
+    Weedperiod calculateStats(Weedperiod weedperiod);
+
     Weedperiod findByCustomer(Customer customer);
 
     Weedperiod save(Weedperiod weedperiod);
