@@ -92,19 +92,6 @@ class BackendWeedperiodTests {
         when(weedperiodRepository.findWeedperiodByCustomerAndIsInitial(customer, true)).thenReturn(Optional.of(weedperiod));
     }
 
-    @BeforeEach
-    void setMockOutputSave() {
-        //when(customerRepository.save(customer, true)).thenReturn(Optional.of(weedperiod));
-    }
-
-    /*@BeforeEach
-    void setMockOutputFindWeedPeriodByID() {
-        Weedperiod weedperiod = createTestWeedperiod();
-        Optional<Customer> optionalCustomer = Optional.of(customer);
-
-        when(customerRepository.findCustomerByUserName(TEST_USER_NAME)).thenReturn(optionalCustomer);
-    }*/
-
 
     @DisplayName("Test Calculate Stats")
     @Test
