@@ -1,9 +1,6 @@
 package com.qweed.backend;
 
-import com.qweed.backend.jpa.Customer;
-import com.qweed.backend.jpa.CustomerRepository;
-import com.qweed.backend.jpa.Weedperiod;
-import com.qweed.backend.jpa.WeedperiodRepository;
+import com.qweed.backend.jpa.*;
 import com.qweed.backend.service.CustomerService;
 import com.qweed.backend.service.DefaultCustomerService;
 import com.qweed.backend.service.DefaultWeedperiodService;
@@ -18,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +33,7 @@ class BackendApplicationTests {
     private WeedperiodRepository weedperiodRepository;
 
     @Mock
-    private WeedperiodService weedperiodService1 = new DefaultWeedperiodService();
+    private WeedperiodService weedperiodService = new DefaultWeedperiodService();
 
     @InjectMocks
     private final CustomerService customerService = new DefaultCustomerService();
@@ -58,8 +56,28 @@ class BackendApplicationTests {
 
         return customer;
     }
+    /*
+    private Weedperiod createTestWeedperiod() {
+        Weedperiod weedperiod = new Weedperiod();
+        weedperiod.setId((long) 1);
+        weedperiod.setCustomerName(TEST_USER_NAME);
+        weedperiod.setStartDate(new Date());
+      //  weedperiod.setPassword("pass");
+       // weedperiod.setMotivation("Very, very low.");
 
-    private List<Customer>Customers;
+        Customer customer = createTestCustomer();
+        weedperiod.setCustomer(customer);
+        //customer.setWeedperiods(weedperiods);
+        Smokesession smokesession = new Smokesession();
+        smokesession.setWeedperiod(weedperiod);
+
+        ArrayList<Smokesession> smokesessions = new ArrayList<>();
+        smokesessions.add(smokesession);
+        weedperiod.setSmokesessions(smokesessions);
+
+        return weedperiod;
+    }
+    private List<Customer>Customers;*/
 
     @BeforeEach
     void setMockOutputFindCustomerByUsername() {
@@ -76,11 +94,14 @@ class BackendApplicationTests {
 
         when(weedperiodRepository.findWeedperiodByCustomerAndIsInitial(customer, true)).thenReturn(Optional.of(weedperiod));
     }
-    @BeforeEach
-    void setMockOutputSave() {
 
-        //when(customerRepository.save(customer, true)).thenReturn(Optional.of(weedperiod));
-    }
+    /*@BeforeEach
+    void setMockOutputFindWeedPeriodByID() {
+        Weedperiod weedperiod = createTestWeedperiod();
+        Optional<Customer> optionalCustomer = Optional.of(customer);
+
+        when(customerRepository.findCustomerByUserName(TEST_USER_NAME)).thenReturn(optionalCustomer);
+    }*/
 
     @DisplayName("Test Find")
     @Test
@@ -90,13 +111,11 @@ class BackendApplicationTests {
         assertEquals("Hello Mockito From Repository", retrievedUserName, TEST_USER_NAME);
     }
 
-    @DisplayName("Test Create")
+
+    @DisplayName("Test Calculate stats")
     @Test
-    void testCreate() {
-        Customer customer = new Customer();
-        customer.setUserName("TestCreate");
-        customer.setPassword("testcreate");
-        customer.setMotivation("testcreate");
+    void testCalculateStats() {
+
 
        // if (customerService.save(customer) == null)
 
