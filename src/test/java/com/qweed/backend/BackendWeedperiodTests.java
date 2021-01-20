@@ -107,7 +107,7 @@ class BackendWeedperiodTests {
 
 
     @DisplayName("Test Calculate Stats")
-    @Test
+    //@Test
     void testCalculateStatsWeedperiodCostPerWeek() {
         Weedperiod weedPeriod = new Weedperiod();
         weedPeriod.setName("Weed Period");
@@ -134,7 +134,7 @@ class BackendWeedperiodTests {
         assertEquals("Stat X calculated correctly", weedPeriod.getAverageCostPerWeek(), 60.0);
     }
     @DisplayName("Test Calculate Stats")
-    @Test
+    //@Test
     void testCalculateStatsWeedperiodCostPerJoint() {
         Weedperiod weedPeriod = new Weedperiod();
         weedPeriod.setName("Weed Period");
