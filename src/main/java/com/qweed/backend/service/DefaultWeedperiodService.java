@@ -27,7 +27,7 @@ public class DefaultWeedperiodService implements WeedperiodService {
     @Override
     public Weedperiod findByID(Long id) {
         Optional<Weedperiod> weedperiod = weedperiodRepository.findWeedperiodById(id);
-        if (weedperiod.isPresent()){
+        if (weedperiod.isPresent()) {
             return calculateStats(weedperiod.get());
         }
 
@@ -36,21 +36,20 @@ public class DefaultWeedperiodService implements WeedperiodService {
 
     @Override
     public Weedperiod calculateStats(Weedperiod weedperiod) {
-        weedperiod.setCostPerJoint(round(weedperiod.getCostPerGram() * weedperiod.getAverageGramPerJoint(),2));
-        if (weedperiod.getIsInitial()){
-            weedperiod.setAverageCostPerWeek(round(weedperiod.getCostPerJoint() * weedperiod.getAverageJointsSmokedPerWeek(),2));
-        }else  {
-
+        weedperiod.setCostPerJoint(round(weedperiod.getCostPerGram() * weedperiod.getAverageGramPerJoint(), 2));
+        if (weedperiod.getIsInitial()) {
+            weedperiod.setAverageCostPerWeek(round(weedperiod.getCostPerJoint() * weedperiod.getAverageJointsSmokedPerWeek(), 2));
+        } else {
             long longnum = 0;
             weedperiod.setTotalJoints(longnum);
             weedperiod.setTotalTime(longnum);
 
-            if (!weedperiod.getSmokesessions().isEmpty()){
-                for (Smokesession smokesession: weedperiod.getSmokesessions()) {
+            if (!weedperiod.getSmokesessions().isEmpty()) {
+                for (Smokesession smokesession : weedperiod.getSmokesessions()) {
                     weedperiod.setTotalJoints(weedperiod.getTotalJoints() + smokesession.getJointsSmoked());
                     weedperiod.setTotalTime(weedperiod.getTotalTime() + smokesession.getDuration());
                 }
-                weedperiod.setTotalCosts(round(weedperiod.getTotalJoints() * weedperiod.getCostPerJoint(),2));
+                weedperiod.setTotalCosts(round(weedperiod.getTotalJoints() * weedperiod.getCostPerJoint(), 2));
             }
             Calendar a = new GregorianCalendar();
             Calendar b = new GregorianCalendar();
@@ -59,11 +58,11 @@ public class DefaultWeedperiodService implements WeedperiodService {
             b.setTime(weedperiod.getEndDate());
 
             //int test =  b.get(Calendar.WEEK_OF_YEAR) - a.get(Calendar.WEEK_OF_YEAR);
-            int Days =  (int) (b.getTime().getTime() - a.getTime().getTime()) / (1000 * 60 * 60 * 24);
-            double week = round((double)Days / 7,2);
-            double averageJointsSmokedPerWeek =(round(weedperiod.getTotalJoints() / week,0));
-            double averageDurationPerWeek = round(weedperiod.getTotalTime() / week,0);
-            double averageCostPerWeek = round(weedperiod.getTotalCosts() / week,0);
+            int Days = (int) (b.getTime().getTime() - a.getTime().getTime()) / (1000 * 60 * 60 * 24);
+            double week = round((double) Days / 7, 2);
+            double averageJointsSmokedPerWeek = (round(weedperiod.getTotalJoints() / week, 0));
+            double averageDurationPerWeek = round(weedperiod.getTotalTime() / week, 0);
+            double averageCostPerWeek = round(weedperiod.getTotalCosts() / week, 0);
             Weedperiod queried_weedperiod = findByCustomer(weedperiod.getCustomer());
             queried_weedperiod = calculateStats(queried_weedperiod);
             weedperiod.setAverageJointsSavedPerWeek(queried_weedperiod.getAverageJointsSmokedPerWeek() - averageJointsSmokedPerWeek);
@@ -72,6 +71,7 @@ public class DefaultWeedperiodService implements WeedperiodService {
         }
         return weedperiod;
     }
+
     public double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 
@@ -88,15 +88,15 @@ public class DefaultWeedperiodService implements WeedperiodService {
 
     @Override
     public Weedperiod save(Weedperiod weedperiod) {
-        if(weedperiod.getIsInitial()) {
-            if (weedperiod.getName() == null || weedperiod.getCustomerName() == null || weedperiod.getCustomer() == null || weedperiod.getEndDate() == null || weedperiod.getStartDate() == null || weedperiod.getIsInitial() == null || weedperiod.getAverageDurationPerWeek() == null || weedperiod.getAverageGramPerJoint() == null || weedperiod.getAverageJointsSmokedPerWeek() == null || weedperiod.getCostPerGram() == null){
+        if (weedperiod.getIsInitial()) {
+            if (weedperiod.getName() == null || weedperiod.getCustomerName() == null || weedperiod.getCustomer() == null || weedperiod.getEndDate() == null || weedperiod.getStartDate() == null || weedperiod.getIsInitial() == null || weedperiod.getAverageDurationPerWeek() == null || weedperiod.getAverageGramPerJoint() == null || weedperiod.getAverageJointsSmokedPerWeek() == null || weedperiod.getCostPerGram() == null) {
                 return null;
             }
 
-            if(weedperiod.getStartDate().after(weedperiod.getEndDate())){
+            if (weedperiod.getStartDate().after(weedperiod.getEndDate())) {
                 return null;
             }
-            if(weedperiod.getEndDate().after(new Date())){
+            if (weedperiod.getEndDate().after(new Date())) {
                 return null;
             }
 
@@ -106,19 +106,19 @@ public class DefaultWeedperiodService implements WeedperiodService {
                 return null;
         } else {
             Weedperiod queried_weedperiod = findByCustomer(weedperiod.getCustomer());
-            if (weedperiod.getName() == null || weedperiod.getCustomer() == null || weedperiod.getStartDate() == null || weedperiod.getIsInitial() == null || weedperiod.getAverageGramPerJoint() == null || weedperiod.getCostPerGram() == null){
+            if (weedperiod.getName() == null || weedperiod.getCustomer() == null || weedperiod.getStartDate() == null || weedperiod.getIsInitial() == null || weedperiod.getAverageGramPerJoint() == null || weedperiod.getCostPerGram() == null) {
                 return null;
             }
-            if(weedperiod.getStartDate().after(new Date())){
+            if (weedperiod.getStartDate().after(new Date())) {
                 return null;
             }
-            if(weedperiod.getStartDate().before(queried_weedperiod.getEndDate())){
+            if (weedperiod.getStartDate().before(queried_weedperiod.getEndDate())) {
                 return null;
             }
             /*if(weedperiod.getStartDate().after(queried_weedperiod.getEndDate())){
                 return null;
             }*/
-            if(weedperiod.getEndDate() == null){
+            if (weedperiod.getEndDate() == null) {
                 weedperiod.setEndDate(weedperiod.getStartDate());
             }
 
