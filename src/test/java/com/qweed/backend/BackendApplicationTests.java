@@ -117,14 +117,14 @@ class BackendApplicationTests {
         assertEquals("Hello Mockito From Repository", customer.getUserName(), TEST_USER_NAME);
     }
     @DisplayName("Test Create")
-    @Test
+    //@Test
     void testSave() {
         Customer customer = customerService.findByUserName(TEST_USER_NAME);
         customer = customerService.save(customer);
         assertEquals("Hello Mockito From Repository", customer.getUserName(), TEST_USER_NAME);
     }
     @DisplayName("Test Logib")
-    @Test
+
     void testLogin() {
 
         String token = customerService.login(TEST_USER_NAME, "pass");
