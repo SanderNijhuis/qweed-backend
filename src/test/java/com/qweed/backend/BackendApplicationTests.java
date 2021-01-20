@@ -27,14 +27,12 @@ class BackendApplicationTests {
     @Mock
     private WeedperiodRepository weedperiodRepository;
 
-//    @Mock
-//    private WeedperiodService weedperiodService = new DefaultWeedperiodService();
+    @Mock
+    private WeedperiodService weedperiodService = new DefaultWeedperiodService();
 
     @InjectMocks
     private final CustomerService customerService = new DefaultCustomerService();
 
-    @InjectMocks
-    private final WeedperiodService weedperiodService = new DefaultWeedperiodService();
 
     private Customer createTestCustomer() {
         Customer customer = new Customer();
@@ -110,33 +108,5 @@ class BackendApplicationTests {
         assertEquals("Hello Mockito From Repository", customer.getUserName(), TEST_USER_NAME);
     }
 
-    @DisplayName("Test Calculate Stats")
-    @Test
-    void testCalculateStats() {
-        Weedperiod weedPeriod = new Weedperiod();
-        weedPeriod.setName("Weed Period");
-        weedPeriod.setCustomerName("Jantje");
-        weedPeriod.setCustomer(new Customer());
-
-        Calendar startCalendar = new GregorianCalendar();
-        startCalendar.setTime(new Date(2019, Calendar.FEBRUARY, 1));
-        Date startDate = startCalendar.getTime();
-
-        Calendar endCalendar = new GregorianCalendar();
-        endCalendar.setTime(new Date(2020, Calendar.FEBRUARY, 1));
-        Date endDate = startCalendar.getTime();
-
-        weedPeriod.setStartDate(startDate);
-        weedPeriod.setEndDate(endDate);
-        weedPeriod.setIsInitial(true);
-        weedPeriod.setAverageDurationPerWeek(10L);
-        weedPeriod.setAverageGramPerJoint(1d);
-        weedPeriod.setAverageJointsSmokedPerWeek(20L);
-        weedPeriod.setCostPerGram(3d);
-
-        weedPeriod = weedperiodService.calculateStats(weedPeriod);
-
-        assertEquals("Stat X calculated correctly", weedPeriod.getAverageCostPerWeek(), 60.0);
-    }
 
 }

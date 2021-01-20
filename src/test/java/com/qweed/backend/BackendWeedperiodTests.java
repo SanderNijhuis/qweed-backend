@@ -1,6 +1,9 @@
 package com.qweed.backend;
 
-import com.qweed.backend.jpa.*;
+import com.qweed.backend.jpa.Customer;
+import com.qweed.backend.jpa.CustomerRepository;
+import com.qweed.backend.jpa.Weedperiod;
+import com.qweed.backend.jpa.WeedperiodRepository;
 import com.qweed.backend.service.CustomerService;
 import com.qweed.backend.service.DefaultCustomerService;
 import com.qweed.backend.service.DefaultWeedperiodService;
@@ -18,7 +21,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @SpringBootTest
-class BackendApplicationTests {
+class BackendWeedperiodTests {
     private static final String TEST_USER_NAME = "MY_TEST_USER_NAME";
 
     @Mock
@@ -30,8 +33,8 @@ class BackendApplicationTests {
 //    @Mock
 //    private WeedperiodService weedperiodService = new DefaultWeedperiodService();
 
-    @InjectMocks
-    private final CustomerService customerService = new DefaultCustomerService();
+    //@InjectMocks
+   // private final CustomerService customerService = new DefaultCustomerService();
 
     @InjectMocks
     private final WeedperiodService weedperiodService = new DefaultWeedperiodService();
@@ -103,12 +106,6 @@ class BackendApplicationTests {
         when(customerRepository.findCustomerByUserName(TEST_USER_NAME)).thenReturn(optionalCustomer);
     }*/
 
-    @DisplayName("Test Find")
-    @Test
-    void testFind() {
-        Customer customer = customerService.findByUserName(TEST_USER_NAME);
-        assertEquals("Hello Mockito From Repository", customer.getUserName(), TEST_USER_NAME);
-    }
 
     @DisplayName("Test Calculate Stats")
     @Test
@@ -135,7 +132,6 @@ class BackendApplicationTests {
         weedPeriod.setCostPerGram(3d);
 
         weedPeriod = weedperiodService.calculateStats(weedPeriod);
-
         assertEquals("Stat X calculated correctly", weedPeriod.getAverageCostPerWeek(), 60.0);
     }
 
