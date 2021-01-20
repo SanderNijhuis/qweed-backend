@@ -21,6 +21,9 @@ public class DefaultCustomerService implements CustomerService {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    WeedperiodService weedperiodService;
+
     @Override
     public void deleteByUserName(String userName) {
         customerRepository.delete(findByUserName(userName));
@@ -54,24 +57,7 @@ public class DefaultCustomerService implements CustomerService {
     public Customer calculateStats(Customer customer) {
         if (!customer.getWeedperiods().isEmpty()) {
             for (Weedperiod weedperiod : customer.getWeedperiods()) {
-                weedperiod.setCostPerJoint(round(weedperiod.getCostPerGram() * weedperiod.getAverageGramPerJoint(),2));
-                if (weedperiod.getIsInitial()){
-                    weedperiod.setAverageCostPerWeek(round(weedperiod.getCostPerJoint() * weedperiod.getAverageJointsSmokedPerWeek(),2));
-                }else  {
-
-                    long longnum = 0;
-                    weedperiod.setTotalJoints(longnum);
-                    weedperiod.setTotalTime(longnum);
-
-                    if (!weedperiod.getSmokesessions().isEmpty()){
-                        for (Smokesession smokesession: weedperiod.getSmokesessions()) {
-                            weedperiod.setTotalJoints(weedperiod.getTotalJoints() + smokesession.getJointsSmoked());
-                            weedperiod.setTotalTime(weedperiod.getTotalTime() + smokesession.getDuration());
-                        }
-                        weedperiod.setTotalCosts(round(weedperiod.getTotalJoints() * weedperiod.getCostPerJoint(),2));
-                    }
-
-                }
+                weedperiodService.calculateStats(weedperiod);
             }
         }
         return customer;
