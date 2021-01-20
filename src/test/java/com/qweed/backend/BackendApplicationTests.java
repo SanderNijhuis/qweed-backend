@@ -1,9 +1,6 @@
 package com.qweed.backend;
 
-import com.qweed.backend.jpa.Customer;
-import com.qweed.backend.jpa.CustomerRepository;
-import com.qweed.backend.jpa.Weedperiod;
-import com.qweed.backend.jpa.WeedperiodRepository;
+import com.qweed.backend.jpa.*;
 import com.qweed.backend.service.CustomerService;
 import com.qweed.backend.service.DefaultCustomerService;
 import com.qweed.backend.service.DefaultWeedperiodService;
@@ -54,8 +51,28 @@ class BackendApplicationTests {
 
         return customer;
     }
+    /*
+    private Weedperiod createTestWeedperiod() {
+        Weedperiod weedperiod = new Weedperiod();
+        weedperiod.setId((long) 1);
+        weedperiod.setCustomerName(TEST_USER_NAME);
+        weedperiod.setStartDate(new Date());
+      //  weedperiod.setPassword("pass");
+       // weedperiod.setMotivation("Very, very low.");
 
-    private List<Customer> Customers;
+        Customer customer = createTestCustomer();
+        weedperiod.setCustomer(customer);
+        //customer.setWeedperiods(weedperiods);
+        Smokesession smokesession = new Smokesession();
+        smokesession.setWeedperiod(weedperiod);
+
+        ArrayList<Smokesession> smokesessions = new ArrayList<>();
+        smokesessions.add(smokesession);
+        weedperiod.setSmokesessions(smokesessions);
+
+        return weedperiod;
+    }
+    private List<Customer>Customers;*/
 
     @BeforeEach
     void setMockOutputFindCustomerByUsername() {
@@ -78,6 +95,14 @@ class BackendApplicationTests {
         //when(customerRepository.save(customer, true)).thenReturn(Optional.of(weedperiod));
     }
 
+    /*@BeforeEach
+    void setMockOutputFindWeedPeriodByID() {
+        Weedperiod weedperiod = createTestWeedperiod();
+        Optional<Customer> optionalCustomer = Optional.of(customer);
+
+        when(customerRepository.findCustomerByUserName(TEST_USER_NAME)).thenReturn(optionalCustomer);
+    }*/
+
     @DisplayName("Test Find")
     @Test
     void testFind() {
@@ -85,22 +110,7 @@ class BackendApplicationTests {
         assertEquals("Hello Mockito From Repository", customer.getUserName(), TEST_USER_NAME);
     }
 
-    @DisplayName("Test Create")
-    @Test
-    void testCreate() {
-        Customer customer = new Customer();
-        customer.setUserName("TestCreate");
-        customer.setPassword("testcreate");
-        customer.setMotivation("testcreate");
-
-        // if (customerService.save(customer) == null)
-
-        //Customer retrievedCustomer = customerService.findByUserName(TEST_USER_NAME);
-        //String retrievedUserName = customer.getUserName();
-        //assertEquals("Hello Mockito From Repository", retrievedUserName, TEST_USER_NAME);
-    }
-
-    @DisplayName("Test Stats")
+    @DisplayName("Test Calculate Stats")
     @Test
     void testCalculateStats() {
         Weedperiod weedPeriod = new Weedperiod();
