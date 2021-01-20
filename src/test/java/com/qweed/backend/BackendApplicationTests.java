@@ -14,8 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -31,11 +34,14 @@ class BackendApplicationTests {
     @Mock
     private WeedperiodRepository weedperiodRepository;
 
+    @Mock
+    private WeedperiodService weedperiodService1 = new DefaultWeedperiodService();
+
     @InjectMocks
     private final CustomerService customerService = new DefaultCustomerService();
 
-    @InjectMocks
-    private final WeedperiodService weedperiodService = new DefaultWeedperiodService();
+    //@InjectMocks
+   // private final WeedperiodService weedperiodService = new DefaultWeedperiodService();
 
     private Customer createTestCustomer() {
         Customer customer = new Customer();
@@ -53,6 +59,8 @@ class BackendApplicationTests {
         return customer;
     }
 
+    private List<Customer>Customers;
+
     @BeforeEach
     void setMockOutputFindCustomerByUsername() {
         Customer customer = createTestCustomer();
@@ -68,6 +76,11 @@ class BackendApplicationTests {
 
         when(weedperiodRepository.findWeedperiodByCustomerAndIsInitial(customer, true)).thenReturn(Optional.of(weedperiod));
     }
+    @BeforeEach
+    void setMockOutputSave() {
+
+        //when(customerRepository.save(customer, true)).thenReturn(Optional.of(weedperiod));
+    }
 
     @DisplayName("Test Find")
     @Test
@@ -76,4 +89,20 @@ class BackendApplicationTests {
         String retrievedUserName = customer.getUserName();
         assertEquals("Hello Mockito From Repository", retrievedUserName, TEST_USER_NAME);
     }
+
+    @DisplayName("Test Create")
+    @Test
+    void testCreate() {
+        Customer customer = new Customer();
+        customer.setUserName("TestCreate");
+        customer.setPassword("testcreate");
+        customer.setMotivation("testcreate");
+
+       // if (customerService.save(customer) == null)
+
+        //Customer retrievedCustomer = customerService.findByUserName(TEST_USER_NAME);
+        //String retrievedUserName = customer.getUserName();
+        //assertEquals("Hello Mockito From Repository", retrievedUserName, TEST_USER_NAME);
+    }
+
 }
