@@ -14,6 +14,9 @@ public class DefaultSmokesessionService implements SmokesessionService {
     @Autowired
     SmokesessionRepository smokesessionRepository;
 
+    @Autowired
+    private WeedperiodService weedperiodService;
+
     @Override
     public void deleteByID(long id) {
         smokesessionRepository.deleteById(id);
@@ -30,11 +33,22 @@ public class DefaultSmokesessionService implements SmokesessionService {
         if (smokesession.getWeedperiod().getIsInitial()){
             return null;
         }
-        if (smokesession.getName() == null || smokesession.getWeedperiodID() == null || smokesession.getWeedperiod() == null || smokesession.getStartDate() == null ||  smokesession.getJointsSmoked() == null||  smokesession.getDuration() == null){
+        if (smokesession.getName() == null || smokesession.getWeedperiod() == null || smokesession.getStartDate() == null ||  smokesession.getJointsSmoked() == null||  smokesession.getDuration() == null){
             return null;
         }
         if(smokesession.getStartDate().after(new Date())){
             return null;
+        }
+        if(smokesession.getStartDate().before(smokesession.getWeedperiod().getStartDate())){
+            return null;
+        }
+        if (smokesession.getStartDate().after(smokesession.getWeedperiod().getEndDate())) {
+            Weedperiod weedperiod = smokesession.getWeedperiod();
+            weedperiod.setEndDate(smokesession.getStartDate());
+            if (weedperiodService.save(weedperiod) == null) {
+                return null;
+            }
+            smokesession.setWeedperiod(weedperiod);
         }
         return smokesessionRepository.save(smokesession);
     }
