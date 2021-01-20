@@ -66,6 +66,11 @@ public class DefaultWeedperiodService implements WeedperiodService {
             double averageJointsSmokedPerWeek =(round(weedperiod.getTotalJoints() / week,0));
             double averageDurationPerWeek = round(weedperiod.getTotalTime() / week,0);
             double averageCostPerWeek = round(weedperiod.getTotalCosts() / week,0);
+            Weedperiod queried_weedperiod = findByCustomer(weedperiod.getCustomer());
+            queried_weedperiod = calculateStats(queried_weedperiod);
+            weedperiod.setAverageJointsSavedPerWeek(queried_weedperiod.getAverageJointsSmokedPerWeek() - averageJointsSmokedPerWeek);
+            weedperiod.setAverageTimeSavedPerWeek(queried_weedperiod.getAverageDurationPerWeek() - averageDurationPerWeek);
+            weedperiod.setAverageCostSavedPerWeek(queried_weedperiod.getAverageCostPerWeek() - averageCostPerWeek);
         }
         return weedperiod;
     }
