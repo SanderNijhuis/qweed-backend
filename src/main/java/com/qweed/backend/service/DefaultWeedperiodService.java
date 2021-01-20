@@ -11,7 +11,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Optional;
 
 @Service("weedperiodService")
@@ -52,6 +54,18 @@ public class DefaultWeedperiodService implements WeedperiodService {
                 }
                 weedperiod.setTotalCosts(round(weedperiod.getTotalJoints() * weedperiod.getCostPerJoint(),2));
             }
+            Calendar a = new GregorianCalendar();
+            Calendar b = new GregorianCalendar();
+
+            a.setTime(weedperiod.getStartDate());
+            b.setTime(weedperiod.getEndDate());
+
+            //int test =  b.get(Calendar.WEEK_OF_YEAR) - a.get(Calendar.WEEK_OF_YEAR);
+            int Days =  (int) (b.getTime().getTime() - a.getTime().getTime()) / (1000 * 60 * 60 * 24);
+            double week = round((double)Days / 7,2);
+            double averageJointsSmokedPerWeek =(round(weedperiod.getTotalJoints() / week,0));
+            double averageDurationPerWeek = round(weedperiod.getTotalTime() / week,0);
+            double averageCostPerWeek = round(weedperiod.getTotalCosts() / week,0);
         }
         return weedperiod;
     }
