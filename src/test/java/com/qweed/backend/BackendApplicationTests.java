@@ -123,7 +123,7 @@ class BackendApplicationTests {
         customer = customerService.save(customer);
         assertEquals("Hello Mockito From Repository", customer.getUserName(), TEST_USER_NAME);
     }
-    @DisplayName("Test Logib")
+    @DisplayName("Test Login")
     @Test
     void testLogin() {
 
