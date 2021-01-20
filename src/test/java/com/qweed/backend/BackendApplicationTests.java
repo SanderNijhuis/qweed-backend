@@ -14,12 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
@@ -34,14 +30,14 @@ class BackendApplicationTests {
     @Mock
     private WeedperiodRepository weedperiodRepository;
 
-    @Mock
-    private WeedperiodService weedperiodService1 = new DefaultWeedperiodService();
+//    @Mock
+//    private WeedperiodService weedperiodService = new DefaultWeedperiodService();
 
     @InjectMocks
     private final CustomerService customerService = new DefaultCustomerService();
 
-    //@InjectMocks
-   // private final WeedperiodService weedperiodService = new DefaultWeedperiodService();
+    @InjectMocks
+    private final WeedperiodService weedperiodService = new DefaultWeedperiodService();
 
     private Customer createTestCustomer() {
         Customer customer = new Customer();
@@ -59,7 +55,7 @@ class BackendApplicationTests {
         return customer;
     }
 
-    private List<Customer>Customers;
+    private List<Customer> Customers;
 
     @BeforeEach
     void setMockOutputFindCustomerByUsername() {
@@ -76,9 +72,9 @@ class BackendApplicationTests {
 
         when(weedperiodRepository.findWeedperiodByCustomerAndIsInitial(customer, true)).thenReturn(Optional.of(weedperiod));
     }
+
     @BeforeEach
     void setMockOutputSave() {
-
         //when(customerRepository.save(customer, true)).thenReturn(Optional.of(weedperiod));
     }
 
@@ -86,8 +82,7 @@ class BackendApplicationTests {
     @Test
     void testFind() {
         Customer customer = customerService.findByUserName(TEST_USER_NAME);
-        String retrievedUserName = customer.getUserName();
-        assertEquals("Hello Mockito From Repository", retrievedUserName, TEST_USER_NAME);
+        assertEquals("Hello Mockito From Repository", customer.getUserName(), TEST_USER_NAME);
     }
 
     @DisplayName("Test Create")
@@ -98,11 +93,40 @@ class BackendApplicationTests {
         customer.setPassword("testcreate");
         customer.setMotivation("testcreate");
 
-       // if (customerService.save(customer) == null)
+        // if (customerService.save(customer) == null)
 
         //Customer retrievedCustomer = customerService.findByUserName(TEST_USER_NAME);
         //String retrievedUserName = customer.getUserName();
         //assertEquals("Hello Mockito From Repository", retrievedUserName, TEST_USER_NAME);
+    }
+
+    @DisplayName("Test Stats")
+    @Test
+    void testCalculateStats() {
+        Weedperiod weedPeriod = new Weedperiod();
+        weedPeriod.setName("Weed Period");
+        weedPeriod.setCustomerName("Jantje");
+        weedPeriod.setCustomer(new Customer());
+
+        Calendar startCalendar = new GregorianCalendar();
+        startCalendar.setTime(new Date(2019, Calendar.FEBRUARY, 1));
+        Date startDate = startCalendar.getTime();
+
+        Calendar endCalendar = new GregorianCalendar();
+        endCalendar.setTime(new Date(2020, Calendar.FEBRUARY, 1));
+        Date endDate = startCalendar.getTime();
+
+        weedPeriod.setStartDate(startDate);
+        weedPeriod.setEndDate(endDate);
+        weedPeriod.setIsInitial(true);
+        weedPeriod.setAverageDurationPerWeek(10L);
+        weedPeriod.setAverageGramPerJoint(1d);
+        weedPeriod.setAverageJointsSmokedPerWeek(20L);
+        weedPeriod.setCostPerGram(3d);
+
+        weedPeriod = weedperiodService.calculateStats(weedPeriod);
+
+        assertEquals("Stat X calculated correctly", weedPeriod.getAverageCostPerWeek(), 60.0);
     }
 
 }
