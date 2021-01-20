@@ -14,8 +14,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 @SpringBootTest
 class BackendApplicationTests {
@@ -90,7 +92,14 @@ class BackendApplicationTests {
 
     @BeforeEach
     void setMockOutputSave() {
-        //when(customerRepository.save(customer, true)).thenReturn(Optional.of(weedperiod));
+        Customer customer = createTestCustomer();
+        when(customerRepository.save(any(Customer.class))).thenReturn(customer);
+    }
+    @BeforeEach
+    void setMockOutputLogin() {
+        Customer customer = createTestCustomer();
+        String token = "f5311068-df36-4d33-abd7-d530153c63dc";
+       // when(customerRepository.login(customer.getUserName(),customer.getPassword())).thenReturn(token);
     }
 
     /*@BeforeEach
@@ -106,6 +115,20 @@ class BackendApplicationTests {
     void testFind() {
         Customer customer = customerService.findByUserName(TEST_USER_NAME);
         assertEquals("Hello Mockito From Repository", customer.getUserName(), TEST_USER_NAME);
+    }
+    @DisplayName("Test Create")
+    @Test
+    void testSave() {
+        Customer customer = customerService.findByUserName(TEST_USER_NAME);
+        customer = customerService.save(customer);
+        assertEquals("Hello Mockito From Repository", customer.getUserName(), TEST_USER_NAME);
+    }
+    @DisplayName("Test Logib")
+    @Test
+    void testLogin() {
+
+        String token = customerService.login(TEST_USER_NAME, "pass");
+        assertNotNull("Hello Mockito From Repository",token);
     }
 
 

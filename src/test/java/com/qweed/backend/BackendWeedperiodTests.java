@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.mockito.Mockito.when;
@@ -106,7 +108,7 @@ class BackendWeedperiodTests {
 
     @DisplayName("Test Calculate Stats")
     @Test
-    void testCalculateStatsInitialWeedperiodCostPerWeek() {
+    void testCalculateStatsWeedperiodCostPerWeek() {
         Weedperiod weedPeriod = new Weedperiod();
         weedPeriod.setName("Weed Period");
         weedPeriod.setCustomerName("Jantje");
@@ -133,7 +135,7 @@ class BackendWeedperiodTests {
     }
     @DisplayName("Test Calculate Stats")
     @Test
-    void testCalculateStatsInitialWeedperiodCostPerJoint() {
+    void testCalculateStatsWeedperiodCostPerJoint() {
         Weedperiod weedPeriod = new Weedperiod();
         weedPeriod.setName("Weed Period");
         weedPeriod.setCustomerName("Jantje");
@@ -158,40 +160,5 @@ class BackendWeedperiodTests {
         weedPeriod = weedperiodService.calculateStats(weedPeriod);
         assertEquals("Stat X calculated correctly", weedPeriod.getCostPerJoint(), 3.0);
     }
-    @DisplayName("Test Calculate Stats")
-    @Test
-    void testCalculateStatsWeedperiodAverageCostPerWeek() {
-        Weedperiod weedPeriod = new Weedperiod();
-        weedPeriod.setName("Weed Period");
-        weedPeriod.setCustomerName("Jantje");
-        weedPeriod.setCustomer(new Customer());
 
-        Calendar startCalendar = new GregorianCalendar();
-        startCalendar.setTime(new Date(2019, Calendar.FEBRUARY, 1));
-        Date startDate = startCalendar.getTime();
-
-        Calendar endCalendar = new GregorianCalendar();
-        endCalendar.setTime(new Date(2020, Calendar.FEBRUARY, 1));
-        Date endDate = startCalendar.getTime();
-
-        weedPeriod.setStartDate(startDate);
-        weedPeriod.setEndDate(endDate);
-        weedPeriod.setIsInitial(false);
-        weedPeriod.setAverageDurationPerWeek(10L);
-        weedPeriod.setAverageGramPerJoint(1d);
-        weedPeriod.setAverageJointsSmokedPerWeek(20L);
-        weedPeriod.setCostPerGram(3d);
-
-        Smokesession smokesession = new Smokesession();
-        smokesession.setJointsSmoked(12L);
-        smokesession.setDuration(300L);
-        smokesession.setWeedperiod(weedPeriod);
-
-        ArrayList<Smokesession> smokesessions = new ArrayList<>();
-        smokesessions.add(smokesession);
-        weedPeriod.setSmokesessions(smokesessions);
-        weedPeriod = weedperiodService.calculateStats(weedPeriod);
-
-        assertEquals("Stat X calculated correctly", weedPeriod.getAverageCostPerWeek(), 3.0);
-    }
 }
