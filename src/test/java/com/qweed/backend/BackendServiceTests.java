@@ -55,7 +55,7 @@ class BackendServiceTests {
         customer.setWeedperiods(weedperiods);
 
         return customer;
-    }*/
+    }
 
 
     @DisplayName("Test Find Customer")
@@ -91,6 +91,8 @@ class BackendServiceTests {
         }
         assertEquals("Hello Mockito From Repository", customer, retrievedCustomer);
     }
+
+     */
 
 
 
