@@ -1,36 +1,48 @@
 package com.qweed.backend;
 
 import com.qweed.backend.jpa.Customer;
+import com.qweed.backend.jpa.CustomerRepository;
 import com.qweed.backend.service.CustomerService;
+import com.qweed.backend.service.DefaultCustomerService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
+import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
-import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
 @SpringBootTest
 class BackendApplicationTests {
+    private static String TEST_USER_NAME = "MY_TEST_USER_NAME";
 
-    @Autowired
-    CustomerService customerService;
+    @Mock
+    private CustomerRepository customerRepository;
 
-    @DisplayName("Test Spring @Autowired Integration")
-    @Test
-    void testGet() {
-        String customerName = "12345_983";
+    @InjectMocks
+    private final CustomerService customerService = new DefaultCustomerService();
 
+    @BeforeEach
+    void setMockOutput() {
         Customer customer = new Customer();
-        customer.setUserName(customerName);
+        customer.setUserName(TEST_USER_NAME);
         customer.setPassword("pass");
-        customer.setMotivation("low");
-        customerService.save(customer);
+        customer.setMotivation("Very, very low.");
 
-        Customer retrieved = customerService.findByUserName(customerName);
-        assertNotNull("Retrieved customer was null", retrieved);
+        Optional<Customer> optionalCustomer = Optional.of(customer);
 
-        String retrievedName = retrieved.getUserName();
-        assertEquals("Retrieved customer name was not found in database", customerName, retrievedName);
+        when(customerRepository.findCustomerByUserName("MY_TEST_USER")).thenReturn(optionalCustomer);
+    }
+
+    @DisplayName("Test Find")
+    @Test
+    void testFind() {
+        Customer customer = customerService.findByUserName(TEST_USER_NAME);
+        String retrievedUserName = customer.getUserName();
+        assertEquals("Hello Mockito From Repository", retrievedUserName, TEST_USER_NAME);
     }
 }
