@@ -1,45 +1,36 @@
 package com.qweed.backend;
 
 import com.qweed.backend.jpa.Customer;
-import com.qweed.backend.jpa.CustomerRepository;
+import com.qweed.backend.service.CustomerService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Optional;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.test.util.AssertionErrors.assertNotNull;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
-@RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest
 class BackendApplicationTests {
 
-	@Autowired
-	private TestEntityManager entityManager;
+    @Autowired
+    CustomerService customerService;
 
-	@Autowired
-	private CustomerRepository customerRepository;
+    @DisplayName("Test Spring @Autowired Integration")
+    @Test
+    void testGet() {
+        String customerName = "12345_983";
 
-	@Test
-	public void whenFindByName_thenReturnCustomer() {
-		// given
-		Customer alex = new Customer();
-		alex.setUserName("alex");
-		alex.setPassword("password");
-		alex.setMotivation("motivation");
-		entityManager.persist(alex);
-		entityManager.flush();
+        Customer customer = new Customer();
+        customer.setUserName(customerName);
+        customer.setPassword("pass");
+        customer.setMotivation("low");
+        customerService.save(customer);
 
-		Optional<Customer> found = customerRepository.findCustomerByUserName(alex.getUserName());
+        Customer retrieved = customerService.findByUserName(customerName);
+        assertNotNull("Retrieved customer was null", retrieved);
 
-		assertThat(found.isPresent());
-
-		Customer foundExists = found.get();
-
-		assertThat(foundExists.getUserName().equals(alex.getUserName()));
-	}
-
+        String retrievedName = retrieved.getUserName();
+        assertEquals("Retrieved customer name was not found in database", customerName, retrievedName);
+    }
 }

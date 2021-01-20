@@ -9,6 +9,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '15'
 
 repositories {
+	jcenter()
 	mavenCentral()
 }
 
@@ -19,6 +20,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'junit:junit:4.12'
 	runtimeOnly 'mysql:mysql-connector-java'
+	testImplementation 'org.mockito:mockito-core:2.+'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
