@@ -26,13 +26,13 @@ class BackendServiceTests {
     private static final String TEST_USER_NAME = "MY_TEST_USER_NAME";
 
 
-    private CustomerRepository customerRepository = new TestCustomerRepository();
+    private final CustomerRepository customerRepository = new TestCustomerRepository();
 
 
-    private WeedperiodRepository weedperiodRepository= new TestWeedperiodRepository();
+    private final WeedperiodRepository weedperiodRepository= new TestWeedperiodRepository();
 
 
-    private WeedperiodService weedperiodService = new DefaultWeedperiodService(weedperiodRepository);
+    private final WeedperiodService weedperiodService = new DefaultWeedperiodService(weedperiodRepository);
 
 
     private final CustomerService customerService = new DefaultCustomerService(customerRepository,weedperiodService);
