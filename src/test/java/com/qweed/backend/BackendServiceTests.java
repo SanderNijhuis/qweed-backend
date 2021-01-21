@@ -1,9 +1,6 @@
 package com.qweed.backend;
 
-import com.qweed.backend.jpa.Customer;
-import com.qweed.backend.jpa.CustomerRepository;
-import com.qweed.backend.jpa.Weedperiod;
-import com.qweed.backend.jpa.WeedperiodRepository;
+import com.qweed.backend.jpa.*;
 import com.qweed.backend.service.CustomerService;
 import com.qweed.backend.service.DefaultCustomerService;
 import com.qweed.backend.service.DefaultWeedperiodService;
@@ -131,6 +128,39 @@ class BackendServiceTests {
         assertNull("Hello Mockito From Repository", retrieved_findByUserName);
     }
 
+    @DisplayName("Test Create Weedperiod")
+    @Test
+    void testCreateWeedperiod() {
+        Weedperiod weedPeriod = new Weedperiod();
+        weedPeriod.setName("Weed Period");
+        weedPeriod.setCustomerName("Jantje");
+        weedPeriod.setCustomer(new Customer());
+
+        Calendar startCalendar = new GregorianCalendar();
+        startCalendar.set(GregorianCalendar.YEAR, 2014);
+        startCalendar.set(GregorianCalendar.MONTH, 7);
+        startCalendar.set(GregorianCalendar.DATE, 23);
+        Date startDate = startCalendar.getTime();
+
+        Calendar endCalendar = new GregorianCalendar();
+        endCalendar.set(GregorianCalendar.YEAR, 2015);
+        endCalendar.set(GregorianCalendar.MONTH, 7);
+        endCalendar.set(GregorianCalendar.DATE, 23);
+        Date endDate = endCalendar.getTime();
+
+
+        weedPeriod.setStartDate(startDate);
+        weedPeriod.setEndDate(endDate);
+        weedPeriod.setIsInitial(true);
+        weedPeriod.setAverageDurationPerWeek(10L);
+        weedPeriod.setAverageGramPerJoint(1d);
+        weedPeriod.setAverageJointsSmokedPerWeek(20L);
+        weedPeriod.setCostPerGram(3d);
+
+        Weedperiod retrieved = weedperiodService.save(weedPeriod);
+        assertEquals("Stat X calculated correctly", weedPeriod.getName(), retrieved.getName());
+    }
+
     @DisplayName("Test Calculate Stats")
     @Test
     void testCalculateStatsWeedperiodCostPerJoint() {
@@ -140,12 +170,16 @@ class BackendServiceTests {
         weedPeriod.setCustomer(new Customer());
 
         Calendar startCalendar = new GregorianCalendar();
-        startCalendar.setTime(new Date(2019, Calendar.FEBRUARY, 1));
+        startCalendar.set(GregorianCalendar.YEAR, 2014);
+        startCalendar.set(GregorianCalendar.MONTH, 7);
+        startCalendar.set(GregorianCalendar.DATE, 23);
         Date startDate = startCalendar.getTime();
 
         Calendar endCalendar = new GregorianCalendar();
-        endCalendar.setTime(new Date(2020, Calendar.FEBRUARY, 1));
-        Date endDate = startCalendar.getTime();
+        endCalendar.set(GregorianCalendar.YEAR, 2015);
+        endCalendar.set(GregorianCalendar.MONTH, 7);
+        endCalendar.set(GregorianCalendar.DATE, 23);
+        Date endDate = endCalendar.getTime();
 
         weedPeriod.setStartDate(startDate);
         weedPeriod.setEndDate(endDate);
