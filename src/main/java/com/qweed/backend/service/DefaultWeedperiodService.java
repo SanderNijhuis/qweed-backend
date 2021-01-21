@@ -19,6 +19,11 @@ public class DefaultWeedperiodService implements WeedperiodService {
     @Autowired
     WeedperiodRepository weedperiodRepository;
 
+    @Autowired
+    public DefaultWeedperiodService(WeedperiodRepository weedperiodRepository) {
+        this.weedperiodRepository = weedperiodRepository;
+    }
+
     @Override
     public void deleteByID(long id) {
         weedperiodRepository.deleteById(id);

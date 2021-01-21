@@ -29,11 +29,11 @@ class BackendApplicationTests {
     @Mock
     private WeedperiodRepository weedperiodRepository;
 
-    @Mock
-    private WeedperiodService weedperiodService = new DefaultWeedperiodService();
+   //@Mock
+    //private WeedperiodService weedperiodService = new DefaultWeedperiodService();
 
     @InjectMocks
-    private final CustomerService customerService = new DefaultCustomerService();
+    private final CustomerService customerService = new DefaultCustomerService(customerRepository,new DefaultWeedperiodService(weedperiodRepository));
 
 
     private Customer createTestCustomer() {

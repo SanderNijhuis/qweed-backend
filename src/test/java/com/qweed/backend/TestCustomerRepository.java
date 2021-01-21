@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class TestCustomerRepository implements CustomerRepository {
-    private List<Customer> customers;
+    private List<Customer> customers = new ArrayList<>();
     @Override
     public Optional<Customer> login(String username, String password) {
         return Optional.empty();
@@ -26,9 +26,12 @@ public class TestCustomerRepository implements CustomerRepository {
 
     @Override
     public Optional<Customer> findCustomerByUserName(String username) {
-        for (Customer customer:customers ) {
-            if(customer.getUserName() == username){
-                return Optional.of(customer);
+        if(customers != null) {
+
+            for (Customer customer : customers) {
+                if (customer.getUserName() == username) {
+                    return Optional.of(customer);
+                }
             }
         }
         return Optional.empty();

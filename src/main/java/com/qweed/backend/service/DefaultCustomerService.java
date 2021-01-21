@@ -21,6 +21,11 @@ public class DefaultCustomerService implements CustomerService {
 
     @Autowired
     WeedperiodService weedperiodService;
+    @Autowired
+    public DefaultCustomerService(CustomerRepository customerRepository, WeedperiodService weedperiodService) {
+        this.customerRepository = customerRepository;
+        this.weedperiodService = weedperiodService;
+    }
 
     @Override
     public void deleteByUserName(String userName) {

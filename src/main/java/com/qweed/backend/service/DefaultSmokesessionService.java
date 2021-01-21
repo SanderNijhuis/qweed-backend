@@ -17,6 +17,12 @@ public class DefaultSmokesessionService implements SmokesessionService {
     @Autowired
     private WeedperiodService weedperiodService;
 
+    @Autowired
+    public DefaultSmokesessionService(SmokesessionRepository smokesessionRepository, WeedperiodService weedperiodService) {
+        this.smokesessionRepository = smokesessionRepository;
+        this.weedperiodService = weedperiodService;
+    }
+
     @Override
     public void deleteByID(long id) {
         smokesessionRepository.deleteById(id);

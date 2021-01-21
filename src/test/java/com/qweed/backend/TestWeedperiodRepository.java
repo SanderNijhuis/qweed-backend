@@ -5,11 +5,12 @@ import com.qweed.backend.jpa.CustomerRepository;
 import com.qweed.backend.jpa.Weedperiod;
 import com.qweed.backend.jpa.WeedperiodRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class TestWeedperiodRepository implements WeedperiodRepository {
-    private List<Weedperiod> weedperiods;
+    private List<Weedperiod> weedperiods = new ArrayList<>();;
 
     @Override
     public Optional<Weedperiod> findWeedperiodByCustomerAndIsInitial(Customer customer, Boolean isInitial) {
