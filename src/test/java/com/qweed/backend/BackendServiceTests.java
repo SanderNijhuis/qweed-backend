@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.*;
 
@@ -22,6 +23,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @SpringBootTest
+@TestPropertySource("classpath:application.production.properties")
 class BackendServiceTests {
     private static final String TEST_USER_NAME = "MY_TEST_USER_NAME";
 
