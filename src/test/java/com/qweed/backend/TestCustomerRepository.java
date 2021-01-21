@@ -11,6 +11,11 @@ public class TestCustomerRepository implements CustomerRepository {
     private List<Customer> customers = new ArrayList<>();
     @Override
     public Optional<Customer> login(String username, String password) {
+        for (Customer customer : customers) {
+            if (customer.getUserName() == username && customer.getPassword() == password) {
+                return Optional.of(customer);
+            }
+        }
         return Optional.empty();
     }
 

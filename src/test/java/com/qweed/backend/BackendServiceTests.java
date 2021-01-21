@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import java.util.*;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
+import static org.springframework.test.util.AssertionErrors.*;
 
 @SpringBootTest
 @Configuration
@@ -43,7 +43,7 @@ class BackendServiceTests {
 
     private final CustomerService customerService = new DefaultCustomerService(customerRepository,weedperiodService);
 
-    //@Test
+    @Test
     void createCustomerTest(){
         Customer customer = new Customer();
         customer.setUserName(TEST_USER_NAME);
@@ -61,9 +61,78 @@ class BackendServiceTests {
 
         assertEquals("Hello Mockito From Repository", retrieved.getUserName(), customer.getUserName());
     }
+    @Test
+    void loginCustomerTest(){
+        Customer customer = new Customer();
+        customer.setUserName(TEST_USER_NAME);
+        customer.setPassword("pass");
+        customer.setMotivation("Very, very low.");
+
+        Weedperiod weedperiod = new Weedperiod();
+        weedperiod.setCustomer(customer);
+
+        ArrayList<Weedperiod> weedperiods = new ArrayList<>();
+        weedperiods.add(weedperiod);
+        customer.setWeedperiods(weedperiods);
+
+        Customer retrieved = customerService.save(customer);
+        String token = customerService.login(customer.getUserName(),customer.getPassword());
+
+        assertNotNull("Hello Mockito From Repository", token);
+        assertNotEquals("Hello Mockito From Repository","",token);
+    }
+    @Test
+    void getCustomerTest(){
+        Customer customer = new Customer();
+        customer.setUserName(TEST_USER_NAME);
+        customer.setPassword("pass");
+        customer.setMotivation("Very, very low.");
+
+        Weedperiod weedperiod = new Weedperiod();
+        weedperiod.setCustomer(customer);
+        weedperiod.setCostPerGram(12d);
+        weedperiod.setAverageGramPerJoint(1.2d);
+        weedperiod.setAverageJointsSmokedPerWeek(22L);
+        weedperiod.setAverageDurationPerWeek(202L);
+        weedperiod.setIsInitial(true);
+
+        ArrayList<Weedperiod> weedperiods = new ArrayList<>();
+        weedperiods.add(weedperiod);
+
+        customer.setWeedperiods(weedperiods);
+
+        Customer retrieved = customerService.save(customer);
+        Customer retrieved_findByUserName = customerService.findByUserName(retrieved.getUserName());
+        assertEquals("Hello Mockito From Repository", retrieved_findByUserName.getUserName(), customer.getUserName());
+    }
+    @Test
+    void deleteCustomerTest(){
+        Customer customer = new Customer();
+        customer.setUserName(TEST_USER_NAME);
+        customer.setPassword("pass");
+        customer.setMotivation("Very, very low.");
+
+        Weedperiod weedperiod = new Weedperiod();
+        weedperiod.setCustomer(customer);
+        weedperiod.setCostPerGram(12d);
+        weedperiod.setAverageGramPerJoint(1.2d);
+        weedperiod.setAverageJointsSmokedPerWeek(22L);
+        weedperiod.setAverageDurationPerWeek(202L);
+        weedperiod.setIsInitial(true);
+
+        ArrayList<Weedperiod> weedperiods = new ArrayList<>();
+        weedperiods.add(weedperiod);
+
+        customer.setWeedperiods(weedperiods);
+
+        Customer retrieved = customerService.save(customer);
+        customerService.deleteByUserName(retrieved.getUserName());
+        Customer retrieved_findByUserName = customerService.findByUserName(retrieved.getUserName());
+        assertNull("Hello Mockito From Repository", retrieved_findByUserName);
+    }
 
     @DisplayName("Test Calculate Stats")
-    //@Test
+    @Test
     void testCalculateStatsWeedperiodCostPerJoint() {
         Weedperiod weedPeriod = new Weedperiod();
         weedPeriod.setName("Weed Period");
@@ -91,7 +160,7 @@ class BackendServiceTests {
     }
 
     @DisplayName("Test Calculate Stats")
-    //@Test
+    @Test
     void testCalculateStatsWeedperiodCostPerWeek() {
         Weedperiod weedPeriod = new Weedperiod();
         weedPeriod.setName("Weed Period");
