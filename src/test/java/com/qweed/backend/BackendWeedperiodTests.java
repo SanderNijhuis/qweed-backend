@@ -42,6 +42,7 @@ class BackendWeedperiodTests {
         Customer customer = new Customer();
         customer.setUserName(TEST_USER_NAME);
         customer.setPassword("pass");
+        //Demo
         customer.setMotivation("Very, very low.");
 
         Weedperiod weedperiod = new Weedperiod();

@@ -26,11 +26,11 @@ public class SmokesessionController {
     ResponseEntity<Smokesession> createSmokesession(@RequestBody Smokesession smokesession) {
         if (smokesession.getWeedperiodID() == null){
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            //test
         }
         smokesession.setWeedperiod(weedperiodService.findByID(smokesession.getWeedperiodID()));
         if (smokesessionService.save(smokesession) == null)
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-
         return new ResponseEntity<>(smokesession, HttpStatus.OK);
     }
 
